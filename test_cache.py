@@ -86,6 +86,7 @@ def test_fillup():
     # Fill up cache array
     for i in range(8):
         raddr = baddr + i*4 + i * 32 * random.randint(1,32)
+        raddr &= 2**16 - 1
         rdata = int(random.random() * (2 ** 32))
         table[raddr] = rdata
         cache1.cache_write(raddr, rdata)
