@@ -101,7 +101,7 @@ if __name__ == '__main__':
 
     cc.write_reg(0, 3)
 
-    cc.cache_flush()
+#    cc.cache_flush()
 
     del cc
     del my_mem
