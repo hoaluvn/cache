@@ -99,15 +99,11 @@ if __name__ == '__main__':
 #    tmp = cc1.cache_read(raddr)
 
 
-    cc.write_reg(0, 3)
+    cc1.write_reg(0, 3)
 
 #    cc.cache_flush()
 
-    del cc
+    del cc1
+    del cc2
     del my_mem
 
-def test_write_read():
-    raddr = int(random.random()* (2 ** 14)) * 4
-    rdata = int(random.random() * (2 ** 32))
-    cc1.cache_write(raddr, rdata)
-    assert rdata == cc1.cache_read(raddr)
