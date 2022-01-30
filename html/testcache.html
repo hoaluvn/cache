@@ -194,18 +194,14 @@ body .il { color: #666666 } /* Literal.Number.Integer.Long */
  <span class="mi">99</span> <span class="c1">#    tmp = cc1.cache_read(raddr)</span>
 <span class="mi">100</span> 
 <span class="mi">101</span> 
-<span class="mi">102</span>     <span class="n">cc</span><span class="o">.</span><span class="n">write_reg</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="mi">102</span>     <span class="n">cc1</span><span class="o">.</span><span class="n">write_reg</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 <span class="mi">103</span> 
-<span class="mi">104</span>     <span class="n">cc</span><span class="o">.</span><span class="n">cache_flush</span><span class="p">()</span>
+<span class="mi">104</span> <span class="c1">#    cc.cache_flush()</span>
 <span class="mi">105</span> 
-<span class="mi">106</span>     <span class="k">del</span> <span class="n">cc</span>
-<span class="mi">107</span>     <span class="k">del</span> <span class="n">my_mem</span>
-<span class="mi">108</span> 
-<span class="mi">109</span> <span class="k">def</span> <span class="nf">test_write_read</span><span class="p">():</span>
-<span class="mi">110</span>     <span class="n">raddr</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span><span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="mi">14</span><span class="p">))</span> <span class="o">*</span> <span class="mi">4</span>
-<span class="mi">111</span>     <span class="n">rdata</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="mi">32</span><span class="p">))</span>
-<span class="mi">112</span>     <span class="n">cc1</span><span class="o">.</span><span class="n">cache_write</span><span class="p">(</span><span class="n">raddr</span><span class="p">,</span> <span class="n">rdata</span><span class="p">)</span>
-<span class="mi">113</span>     <span class="k">assert</span> <span class="n">rdata</span> <span class="o">==</span> <span class="n">cc1</span><span class="o">.</span><span class="n">cache_read</span><span class="p">(</span><span class="n">raddr</span><span class="p">)</span>
+<span class="mi">106</span>     <span class="k">del</span> <span class="n">cc1</span>
+<span class="mi">107</span>     <span class="k">del</span> <span class="n">cc2</span>
+<span class="mi">108</span>     <span class="k">del</span> <span class="n">my_mem</span>
+<span class="mi">109</span> 
 </pre></div>
 </body>
 </html>

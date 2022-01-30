@@ -3,8 +3,8 @@ import logging
 from random import random
 
 class memory:
-    """ 
-    Main memory model 
+    """
+    Main memory model
        storage_path  : "secondary" storage
        addr_width    :
        byte_align    :
@@ -16,12 +16,14 @@ class memory:
         self.byte_align = int(byte_align)
         self.data_width = int(data_width)
         self.mem_size   = 2 ** self.addr_width
+        self.db = {}
 
         """ Load content from secondary storage """
-        with open(self.storage, "r") as ymlfile:
-            self.db = yaml.load(ymlfile, Loader=yaml.BaseLoader)
-        if not self.db:
-            self.db = {}
+        try:
+            with open(self.storage, "r") as ymlfile:
+                self.db = yaml.load(ymlfile, Loader=yaml.BaseLoader)
+        except IOError:
+            logging.warning("DB file not exist, will create a new one")
 
     def __del__(self):
         self.mem_flush()

@@ -98,8 +98,8 @@ body .il { color: #666666 } /* Literal.Number.Integer.Long */
  <span class="mi">3</span> <span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">random</span>
  <span class="mi">4</span> 
  <span class="mi">5</span> <span class="k">class</span> <span class="nc">memory</span><span class="p">:</span>
- <span class="mi">6</span>     <span class="s2">&quot;&quot;&quot; </span>
-<span class="s2"> 7     Main memory model </span>
+ <span class="mi">6</span>     <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2"> 7     Main memory model</span>
 <span class="s2"> 8        storage_path  : &quot;secondary&quot; storage</span>
 <span class="s2"> 9        addr_width    :</span>
 <span class="s2">10        byte_align    :</span>
@@ -111,47 +111,49 @@ body .il { color: #666666 } /* Literal.Number.Integer.Long */
 <span class="mi">16</span>         <span class="bp">self</span><span class="o">.</span><span class="n">byte_align</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">byte_align</span><span class="p">)</span>
 <span class="mi">17</span>         <span class="bp">self</span><span class="o">.</span><span class="n">data_width</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">data_width</span><span class="p">)</span>
 <span class="mi">18</span>         <span class="bp">self</span><span class="o">.</span><span class="n">mem_size</span>   <span class="o">=</span> <span class="mi">2</span> <span class="o">**</span> <span class="bp">self</span><span class="o">.</span><span class="n">addr_width</span>
-<span class="mi">19</span> 
-<span class="mi">20</span>         <span class="s2">&quot;&quot;&quot; Load content from secondary storage &quot;&quot;&quot;</span>
-<span class="mi">21</span>         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">storage</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">ymlfile</span><span class="p">:</span>
-<span class="mi">22</span>             <span class="bp">self</span><span class="o">.</span><span class="n">db</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">ymlfile</span><span class="p">,</span> <span class="n">Loader</span><span class="o">=</span><span class="n">yaml</span><span class="o">.</span><span class="n">BaseLoader</span><span class="p">)</span>
-<span class="mi">23</span>         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="p">:</span>
-<span class="mi">24</span>             <span class="bp">self</span><span class="o">.</span><span class="n">db</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="mi">25</span> 
-<span class="mi">26</span>     <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="mi">27</span>         <span class="bp">self</span><span class="o">.</span><span class="n">mem_flush</span><span class="p">()</span>
-<span class="mi">28</span> 
-<span class="mi">29</span>     <span class="k">def</span> <span class="nf">__addr_check</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">addr</span><span class="p">):</span>
-<span class="mi">30</span>         <span class="n">res</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="mi">31</span>         <span class="k">if</span> <span class="n">addr</span> <span class="o">&amp;</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">byte_align</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
-<span class="mi">32</span>             <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Address alignment: 0x</span><span class="si">%x</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">addr</span><span class="p">)</span>
-<span class="mi">33</span>             <span class="n">res</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="mi">34</span>         <span class="k">if</span> <span class="n">addr</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">mem_size</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">byte_align</span><span class="p">:</span>
-<span class="mi">35</span>             <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Address is out of range: 0x</span><span class="si">%x</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">addr</span><span class="p">)</span>
-<span class="mi">36</span>             <span class="n">res</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="mi">37</span>         <span class="k">return</span> <span class="n">res</span>
-<span class="mi">38</span> 
-<span class="mi">39</span>     <span class="k">def</span> <span class="nf">mem_read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">addr</span><span class="p">):</span>
-<span class="mi">40</span>         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__addr_check</span><span class="p">(</span><span class="n">addr</span><span class="p">):</span>
-<span class="mi">41</span>             <span class="n">hexaddr</span> <span class="o">=</span> <span class="nb">hex</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span>
-<span class="mi">42</span>             <span class="k">if</span> <span class="n">hexaddr</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="p">:</span>
-<span class="mi">43</span>                 <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Read uninitialized address: 0x</span><span class="si">%x</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">addr</span><span class="p">)</span>
-<span class="mi">44</span>                 <span class="n">data</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">random</span><span class="p">()</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_width</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="p">)</span>
-<span class="mi">45</span>                 <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="p">[</span><span class="n">hexaddr</span><span class="p">]</span> <span class="o">=</span> <span class="nb">hex</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-<span class="mi">46</span>             <span class="k">else</span><span class="p">:</span>
-<span class="mi">47</span>                 <span class="n">data</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="p">[</span><span class="n">hexaddr</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span>
-<span class="mi">48</span>             <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Memmory read : [0x</span><span class="si">%04x</span><span class="s2">] =&gt; 0x</span><span class="si">%x</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">addr</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
-<span class="mi">49</span>             <span class="k">return</span> <span class="n">data</span>
-<span class="mi">50</span> 
-<span class="mi">51</span>     <span class="k">def</span> <span class="nf">mem_write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">addr</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-<span class="mi">52</span>         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__addr_check</span><span class="p">(</span><span class="n">addr</span><span class="p">):</span>
-<span class="mi">53</span>             <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Memmory write: [0x</span><span class="si">%04x</span><span class="s2">] &lt;= 0x</span><span class="si">%x</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">addr</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
-<span class="mi">54</span>             <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="p">[</span><span class="nb">hex</span><span class="p">(</span><span class="n">addr</span><span class="p">)]</span> <span class="o">=</span> <span class="nb">hex</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-<span class="mi">55</span> 
-<span class="mi">56</span>     <span class="s2">&quot;&quot;&quot; Store content to secondary storage &quot;&quot;&quot;</span>
-<span class="mi">57</span>     <span class="k">def</span> <span class="nf">mem_flush</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="mi">58</span>         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">storage</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">ymlfile</span><span class="p">:</span>
-<span class="mi">59</span>             <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="p">,</span> <span class="n">ymlfile</span><span class="p">)</span>
+<span class="mi">19</span>         <span class="bp">self</span><span class="o">.</span><span class="n">db</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="mi">20</span> 
+<span class="mi">21</span>         <span class="s2">&quot;&quot;&quot; Load content from secondary storage &quot;&quot;&quot;</span>
+<span class="mi">22</span>         <span class="k">try</span><span class="p">:</span>
+<span class="mi">23</span>             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">storage</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">ymlfile</span><span class="p">:</span>
+<span class="mi">24</span>                 <span class="bp">self</span><span class="o">.</span><span class="n">db</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">ymlfile</span><span class="p">,</span> <span class="n">Loader</span><span class="o">=</span><span class="n">yaml</span><span class="o">.</span><span class="n">BaseLoader</span><span class="p">)</span>
+<span class="mi">25</span>         <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
+<span class="mi">26</span>             <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;DB file not exist, will create a new one&quot;</span><span class="p">)</span>
+<span class="mi">27</span> 
+<span class="mi">28</span>     <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="mi">29</span>         <span class="bp">self</span><span class="o">.</span><span class="n">mem_flush</span><span class="p">()</span>
+<span class="mi">30</span> 
+<span class="mi">31</span>     <span class="k">def</span> <span class="nf">__addr_check</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">addr</span><span class="p">):</span>
+<span class="mi">32</span>         <span class="n">res</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="mi">33</span>         <span class="k">if</span> <span class="n">addr</span> <span class="o">&amp;</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">byte_align</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+<span class="mi">34</span>             <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Address alignment: 0x</span><span class="si">%x</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">addr</span><span class="p">)</span>
+<span class="mi">35</span>             <span class="n">res</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="mi">36</span>         <span class="k">if</span> <span class="n">addr</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">mem_size</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">byte_align</span><span class="p">:</span>
+<span class="mi">37</span>             <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Address is out of range: 0x</span><span class="si">%x</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">addr</span><span class="p">)</span>
+<span class="mi">38</span>             <span class="n">res</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="mi">39</span>         <span class="k">return</span> <span class="n">res</span>
+<span class="mi">40</span> 
+<span class="mi">41</span>     <span class="k">def</span> <span class="nf">mem_read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">addr</span><span class="p">):</span>
+<span class="mi">42</span>         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__addr_check</span><span class="p">(</span><span class="n">addr</span><span class="p">):</span>
+<span class="mi">43</span>             <span class="n">hexaddr</span> <span class="o">=</span> <span class="nb">hex</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span>
+<span class="mi">44</span>             <span class="k">if</span> <span class="n">hexaddr</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="p">:</span>
+<span class="mi">45</span>                 <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Read uninitialized address: 0x</span><span class="si">%x</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">addr</span><span class="p">)</span>
+<span class="mi">46</span>                 <span class="n">data</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">random</span><span class="p">()</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_width</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="p">)</span>
+<span class="mi">47</span>                 <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="p">[</span><span class="n">hexaddr</span><span class="p">]</span> <span class="o">=</span> <span class="nb">hex</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="mi">48</span>             <span class="k">else</span><span class="p">:</span>
+<span class="mi">49</span>                 <span class="n">data</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="p">[</span><span class="n">hexaddr</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span>
+<span class="mi">50</span>             <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Memmory read : [0x</span><span class="si">%04x</span><span class="s2">] =&gt; 0x</span><span class="si">%x</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">addr</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+<span class="mi">51</span>             <span class="k">return</span> <span class="n">data</span>
+<span class="mi">52</span> 
+<span class="mi">53</span>     <span class="k">def</span> <span class="nf">mem_write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">addr</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="mi">54</span>         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__addr_check</span><span class="p">(</span><span class="n">addr</span><span class="p">):</span>
+<span class="mi">55</span>             <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Memmory write: [0x</span><span class="si">%04x</span><span class="s2">] &lt;= 0x</span><span class="si">%x</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">addr</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+<span class="mi">56</span>             <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="p">[</span><span class="nb">hex</span><span class="p">(</span><span class="n">addr</span><span class="p">)]</span> <span class="o">=</span> <span class="nb">hex</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="mi">57</span> 
+<span class="mi">58</span>     <span class="s2">&quot;&quot;&quot; Store content to secondary storage &quot;&quot;&quot;</span>
+<span class="mi">59</span>     <span class="k">def</span> <span class="nf">mem_flush</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="mi">60</span>         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">storage</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">ymlfile</span><span class="p">:</span>
+<span class="mi">61</span>             <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="p">,</span> <span class="n">ymlfile</span><span class="p">)</span>
 </pre></div>
 </body>
 </html>
